@@ -13,8 +13,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "PORT=3001 react-scripts start",
+    "start:prod": "PORT=3001 REACT_APP_API_URL=http://83.151.132.141/api react-scripts start",
+    "build": "REACT_APP_API_URL=http://83.151.132.141/api react-scripts build",
+    "build:dev": "REACT_APP_API_URL=http://localhost:3000/api react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

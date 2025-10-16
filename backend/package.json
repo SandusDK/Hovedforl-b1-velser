@@ -1,6 +1,14 @@
 {
   "type": "module",
+  "name": "backend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
+    "prod": "NODE_ENV=production HOST=0.0.0.0 PORT=3000 node server.js"
+  },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "pg": "^8.16.3"
   },
