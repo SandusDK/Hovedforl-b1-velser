@@ -5,9 +5,20 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+# builds
+**/obj/
+**/bin/
+**/debug/
+**/out/
+**/publish/
 
+
+
+#misc
 .vs/
-
+**/*.cache
+**/*.db
+**/*.bak
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
