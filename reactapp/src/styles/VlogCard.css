@@ -1,0 +1,30 @@
+.vlog-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.vlog-card:hover {
+  transform: translateY(-5px);
+}
+
+.vlog-thumbnail {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.vlog-title {
+  font-size: 1.2em;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.vlog-description {
+  font-size: 1em;
+  color: #666;
+}
+

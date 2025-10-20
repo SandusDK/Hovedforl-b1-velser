@@ -1,0 +1,19 @@
+import React from 'react';
+import '../styles/VlogCard.css';
+import { useNavigate } from 'react-router-dom';
+
+export default function VlogCard({ id,title, description, thumbnail }: {
+  id: number;
+  title: string;
+  description: string;
+  thumbnail: string;
+}) {
+  const navigate = useNavigate();
+  return (
+    <div className="vlog-card" onClick={() => navigate(`/vlog/${id}`)}>
+      <img src={thumbnail} alt={title} className="vlog-thumbnail" />
+      <h2 className="vlog-title">{title}</h2>
+      <p className="vlog-description">{description}</p>
+    </div>
+  );
+}

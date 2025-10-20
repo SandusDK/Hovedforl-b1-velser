@@ -1,17 +1,14 @@
+import { Router, Routes,Route } from "react-router-dom";
 import "./App.css";
 import Main from "./components/main";
+import VlogPage from "./pages/VlogPage";
 
 function App() {
 	return (
-		<div className="App">
-			<header>
-				<h1>Hovedforløb Web</h1>
-			</header>
-			<div className="AppMain">
-				<Main />
-			</div>
-			<footer>© Sandesh Jha 2024</footer>
-		</div>
+		<Routes>
+			<Route path="/" element={<Main />} />
+			<Route path="/vlog/:id" element={<VlogPage />} />
+		</Routes>
 	);
 }
 

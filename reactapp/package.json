@@ -9,11 +9,12 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.4",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
+    "start": "react-scripts start",
     "start:prod": "PORT=3001 REACT_APP_API_URL=http://83.151.132.141/api react-scripts start",
     "build": "REACT_APP_API_URL=http://83.151.132.141/api react-scripts build",
     "build:dev": "REACT_APP_API_URL=http://localhost:3000/api react-scripts build",
