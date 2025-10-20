@@ -31,7 +31,6 @@ app.UseUmbraco()
     {
         u.UseBackOfficeEndpoints();
         u.UseWebsiteEndpoints();
-        u.UseDeliveryApiEndpoints();
     });
 
 await app.RunAsync();
