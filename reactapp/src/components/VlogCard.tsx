@@ -2,11 +2,12 @@ import React from 'react';
 import '../styles/VlogCard.css';
 import { useNavigate } from 'react-router-dom';
 
-export default function VlogCard({ id,title, description, thumbnail }: {
+export default function VlogCard({ id,title, description, thumbnail, date }: {
   id: number;
   title: string;
   description: string;
   thumbnail: string;
+  date: string;
 }) {
   const navigate = useNavigate();
   return (

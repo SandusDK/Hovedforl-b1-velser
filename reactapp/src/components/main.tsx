@@ -1,89 +1,89 @@
-import React, { use, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import config from "../config";
 import VlogCard from "./VlogCard";
+import { VlogPageData } from "../types/Vlog";
+import VlogSeed from "../data/VlogSeed";
 
 export default function Main() {
-	const [searchTerm, setSearchTerm] = React.useState("");
-	const [results, setResults] = React.useState(null);
-	const [vlogs, setVlogs] = React.useState([
-		{id: 1, title: "Sample Vlog", description: "This is a sample vlog description.", thumbnail: "https://placehold.co/600x400"}, 
-		{id: 2, title: "Another Vlog", description: "This is another vlog description.", thumbnail: "https://placehold.co/600x400"},
-		{id: 3, title: "Travel Vlog", description: "Exploring new places.", thumbnail: "https://placehold.co/600x400"},
-		{id: 4, title: "Tech Vlog", description: "Latest tech reviews.", thumbnail: "https://placehold.co/600x400"},
-		{id: 5, title: "Food Vlog", description: "Delicious recipes and food reviews.", thumbnail: "https://placehold.co/600x400"},
-		{id: 6, title: "Fitness Vlog", description: "Workout routines and health tips.", thumbnail: "https://placehold.co/600x400"},
-	]);
+	const [searchTerm, setSearchTerm] = useState("");
+	const [vlogs, setVlogs] = useState<VlogPageData[]>(VlogSeed);
+	const [filteredVlogs, setFilteredVlogs] = useState<VlogPageData[]>([]);
+
 	useEffect(() => {
 		console.log("API URL from config:", config.API_URL);
+		// Show all vlogs by default
+		//setFilteredVlogs(VlogSeed);
 	}, []);
-	
-	const filteredVlogs = vlogs.filter((vlog) =>
-		vlog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-		vlog.description.toLowerCase().includes(searchTerm.toLowerCase())
-	); 
 
-
-
-	const handleSearch = async () => {
-		if (!searchTerm) return;
-
-		try {
-			// Use the API URL from config (already includes /api prefix)
-			const response = await fetch(`${config.API_URL}/search?image=${encodeURIComponent(searchTerm)}`);
-			const data = await response.json();
-			setResults(data);
-			console.log("Search results:", data);
-		} catch (error) {
-			console.error("Error searching:", error);
+	const handleSearch = () => {
+		if (!searchTerm) {
+			setFilteredVlogs(vlogs);
+			return;
 		}
-	};	return (
+
+		const filtered = vlogs.filter((vlog) => {
+			const firstPost = vlog.posts[0];
+			return (
+				vlog.blogName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				firstPost?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+				firstPost?.description.toLowerCase().includes(searchTerm.toLowerCase())
+			);
+		});
+
+		setFilteredVlogs(filtered);
+	};
+
+	return (
 		<div className="AppMain">
 			<header>
 				<h1>Hovedforløb Web</h1>
 			</header>
+
 			<div className="Main">
-			<input
-				type="text"
-				placeholder="Du kan søge her..."
-				className="SøgeInput"
-				value={searchTerm}
-				onChange={(e) => setSearchTerm(e.target.value)}
-			></input>
-			<button
-				className="Button"
-				onClick={handleSearch}
-			>
-				Søg
-			</button>
-			<button
-				className="Button"
-				onClick={() => {
-					setSearchTerm("");
-					setResults(null);
-				}}
-			>
-				Ryd
-			</button>
-			{results && (
-				<div className="results">
-					<pre>{JSON.stringify(results, null, 2)}</pre>
+				<input
+					type="text"
+					placeholder="Du kan søge her..."
+					className="SøgeInput"
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
+				<button className="Button" onClick={handleSearch}>
+					Søg
+				</button>
+				<button
+					className="Button"
+					onClick={() => {
+						setSearchTerm("");
+						setFilteredVlogs(vlogs);
+					}}
+				>
+					Ryd
+				</button>
+
+				<div className="VlogGrid">
+					{filteredVlogs.length > 0 ? (
+						filteredVlogs.map((vlog, index) => {
+							const firstPost = vlog.posts[0];
+
+							return (
+								<VlogCard
+									key={index}
+									id={vlog.id}
+									title={vlog.blogName}
+									description={firstPost?.description ?? "Ingen beskrivelse"}
+									thumbnail={firstPost?.image ?? ""}
+									date={firstPost?.date ?? "Ukendt dato"}
+								/>
+							);
+						})
+					) : (
+						<p>No results found.</p>
+					)}
 				</div>
-			)}
-			<div className="VlogGrid" >
-				{filteredVlogs.map((vlog) => (
-					<VlogCard
-						key={vlog.id}
-						id={vlog.id}
-						title={vlog.title}
-						description={vlog.description}
-						thumbnail={vlog.thumbnail}
-						
-					/>
-				))}
 			</div>
-		</div>
-		<footer>© Sandesh Jha 2024</footer>
+
+			<footer>© Sandesh Jha 2024</footer>
 		</div>
 	);
 }
