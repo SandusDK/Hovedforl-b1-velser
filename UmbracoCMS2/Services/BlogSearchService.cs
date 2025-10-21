@@ -197,37 +197,10 @@ public class BlogSearchService : IBlogSearchService
         var contentText = content.HasProperty("content") ? content.Value<string>("content") ?? string.Empty : string.Empty;
 
         var featuredImage = string.Empty;
-        if (content.HasProperty("featuredImage") && content.HasValue("featuredImage"))
+        if (content.HasProperty("featuredImage"))
         {
-            try
-            {
-                // Try to get as media picker (returns IEnumerable)
-                var mediaItems = content.Value<IEnumerable<IPublishedContent>>("featuredImage");
-                if (mediaItems != null && mediaItems.Any())
-                {
-                    var mediaItem = mediaItems.FirstOrDefault();
-                    if (mediaItem != null && mediaItem.ContentType.ItemType == PublishedItemType.Media)
-                    {
-                        featuredImage = mediaItem.Url();
-                    }
-                }
-            }
-            catch
-            {
-                // Fallback: try as single media picker
-                try
-                {
-                    var singleMedia = content.Value<IPublishedContent>("featuredImage");
-                    if (singleMedia != null && singleMedia.ContentType.ItemType == PublishedItemType.Media)
-                    {
-                        featuredImage = singleMedia.Url();
-                    }
-                }
-                catch
-                {
-                    // If all else fails, leave empty
-                }
-            }
+            var media = content.Value<IPublishedContent>("featuredImage");
+            featuredImage = media?.Url() ?? string.Empty;
         }
 
         return new BlogPost
@@ -249,36 +222,10 @@ public class BlogSearchService : IBlogSearchService
         var description = content.HasProperty("description") ? content.Value<string>("description") ?? string.Empty : string.Empty;
 
         var image = string.Empty;
-        if (content.HasProperty("image") && content.HasValue("image"))
+        if (content.HasProperty("image"))
         {
-            try
-            {
-                var mediaItems = content.Value<IEnumerable<IPublishedContent>>("image");
-                if (mediaItems != null && mediaItems.Any())
-                {
-                    var mediaItem = mediaItems.FirstOrDefault();
-                    if (mediaItem != null && mediaItem.ContentType.ItemType == PublishedItemType.Media)
-                    {
-                        image = mediaItem.Url();
-                    }
-                }
-            }
-            catch
-            {
-                // Fallback: try as single media picker
-                try
-                {
-                    var singleMedia = content.Value<IPublishedContent>("image");
-                    if (singleMedia != null && singleMedia.ContentType.ItemType == PublishedItemType.Media)
-                    {
-                        image = singleMedia.Url();
-                    }
-                }
-                catch
-                {
-                    // If all else fails, leave empty
-                }
-            }
+            var media = content.Value<IPublishedContent>("image");
+            image = media?.Url() ?? string.Empty;
         }
 
         return new AboutSection
