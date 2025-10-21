@@ -199,7 +199,8 @@ public class BlogSearchService : IBlogSearchService
         var featuredImage = string.Empty;
         if (content.HasProperty("featuredImage"))
         {
-            var mediaItem = content.Value<IPublishedContent>("featuredImage");
+            var mediaItems = content.Value<IEnumerable<IPublishedContent>>("featuredImage");
+            var mediaItem = mediaItems?.FirstOrDefault();
             if (mediaItem != null)
             {
                 featuredImage = mediaItem.Url();
