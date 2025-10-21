@@ -15,7 +15,7 @@ public class BlogSearchController : ControllerBase
     }
 
     [HttpGet("search")]
-    public ActionResult<IEnumerable<BlogSearchResult>> Search([FromQuery] string q)
+    public ActionResult<IEnumerable<BlogPageData>> Search([FromQuery] string q)
     {
         if (string.IsNullOrWhiteSpace(q))
             return BadRequest(new { error = "Search query cannot be empty" });
