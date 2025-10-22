@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import config from "../config";
-import VlogCard from "./VlogCard";
+import VlogCard from "../components/VlogCard";
 import { VlogPageData } from "../types/Vlog";
 import VlogSeed from "../data/VlogSeed";
 
-export default function Main() {
+export default function MainPage() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [vlogs, setVlogs] = useState<VlogPageData[]>(VlogSeed);
 	const [filteredVlogs, setFilteredVlogs] = useState<VlogPageData[]>([]);
 
+	const fetchData = async () => {
+		const response = await fetch(
+			"http://192.168.1.50:52488/api/BlogSearch/search?q=1"
+		);
+		const data = await response.json();
+		return data;
+	};
+
 	useEffect(() => {
 		console.log("API URL from config:", config.API_URL);
-		// Show all vlogs by default
-		//setFilteredVlogs(VlogSeed);
+		fetchData().then((data) => console.log(`data from api: ${data}`));
 	}, []);
 
 	const handleSearch = () => {
@@ -27,7 +34,9 @@ export default function Main() {
 			return (
 				vlog.blogName.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				firstPost?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				firstPost?.description.toLowerCase().includes(searchTerm.toLowerCase())
+				firstPost?.description
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase())
 			);
 		});
 
@@ -71,7 +80,9 @@ export default function Main() {
 									key={index}
 									id={vlog.id}
 									title={vlog.blogName}
-									description={firstPost?.description ?? "Ingen beskrivelse"}
+									description={
+										firstPost?.description ?? "Ingen beskrivelse"
+									}
 									thumbnail={firstPost?.image ?? ""}
 									date={firstPost?.date ?? "Ukendt dato"}
 								/>

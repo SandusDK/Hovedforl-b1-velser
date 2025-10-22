@@ -1,6 +1,6 @@
-import { Router, Routes,Route } from "react-router-dom";
+import { Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Main from "./components/main";
+import MainPage from "./pages/MainPage";
 import VlogPage from "./pages/VlogPage";
 
 function App() {
