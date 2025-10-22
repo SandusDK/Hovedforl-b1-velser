@@ -18,10 +18,10 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 		try {
 			console.log(
 				"Henter vlogs fra API fra:",
-				`${config.API_URL}/BlogSearch/search?q=1`
+				`${config.API_URL}/BlogSearch/search?q=page`
 			);
 			const response = await fetch(
-				`${config.API_URL}/BlogSearch/search?q=1`
+				`${config.API_URL}/BlogSearch/search?q=page`
 			);
 
 			if (!response.ok) throw new Error(`HTTP-fejl: ${response.status}`);
