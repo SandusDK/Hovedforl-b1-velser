@@ -35,6 +35,32 @@ await app.BootUmbracoAsync();
 // Enable CORS
 app.UseCors("AllowAll");
 
+// Add response caching middleware for static files
+app.Use(async (context, next) =>
+{
+    var path = context.Request.Path.Value?.ToLower() ?? "";
+
+    // Cache static assets for 1 year
+    if (path.StartsWith("/media/") ||
+        path.StartsWith("/css/") ||
+        path.StartsWith("/js/") ||
+        path.EndsWith(".js") ||
+        path.EndsWith(".css") ||
+        path.EndsWith(".jpg") ||
+        path.EndsWith(".jpeg") ||
+        path.EndsWith(".png") ||
+        path.EndsWith(".gif") ||
+        path.EndsWith(".webp") ||
+        path.EndsWith(".svg") ||
+        path.EndsWith(".woff") ||
+        path.EndsWith(".woff2"))
+    {
+        context.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
+    }
+
+    await next();
+});
+
 app.UseUmbraco()
     .WithMiddleware(u =>
     {

@@ -8,12 +8,14 @@ export default function VlogCard({
 	description,
 	thumbnail,
 	date,
+	isFirst = false,
 }: {
 	id: string;
 	title: string;
 	description: string;
 	thumbnail: string;
 	date: string;
+	isFirst?: boolean;
 }) {
 	const navigate = useNavigate();
 	const urlFriendlyName = encodeURIComponent(title);
@@ -25,6 +27,8 @@ export default function VlogCard({
 				height={200}
 				alt={title}
 				className="vlog-thumbnail"
+				loading={isFirst ? "eager" : "lazy"}
+				fetchPriority={isFirst ? "high" : "auto"}
 			/>
 			<h2 className="vlog-title">{title}</h2>
 			<p className="vlog-description">{description}</p>

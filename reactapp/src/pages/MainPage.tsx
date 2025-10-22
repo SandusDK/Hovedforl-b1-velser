@@ -93,7 +93,7 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 					{loading ? (
 						<p>Loading vlogs...</p>
 					) : displayedVlogs.length > 0 ? (
-						displayedVlogs.map((vlog) => {
+						displayedVlogs.map((vlog, index) => {
 							const firstPost = vlog.posts[0];
 							return (
 								<VlogCard
@@ -103,6 +103,7 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 									description={vlog.followText ?? "Ingen beskrivelse"}
 									thumbnail={firstPost?.featuredImage ?? ""}
 									date={firstPost?.publishDate ?? "Ukendt dato"}
+									isFirst={index === 0}
 								/>
 							);
 						})
