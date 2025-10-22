@@ -4,7 +4,7 @@ interface Config {
 }
 
 const config: Config = {
-	API_URL: process.env.REACT_APP_API_URL || "https://83.151.132.141/api",
+	API_URL: "https://83.151.132.141/api",
 };
 
 export default config;
