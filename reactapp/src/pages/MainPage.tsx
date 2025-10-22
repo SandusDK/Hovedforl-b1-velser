@@ -47,7 +47,6 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 
 	const handleSearch = async () => {
 		if (!searchTerm.trim()) {
-			// If search is empty, fetch default results
 			setLoading(true);
 			const data = await fetchVlogs();
 			setDisplayedVlogs(data);
@@ -55,7 +54,6 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 			return;
 		}
 
-		// Call API with search term
 		setLoading(true);
 		const data = await fetchVlogs(searchTerm);
 		setDisplayedVlogs(data);

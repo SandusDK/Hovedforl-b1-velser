@@ -16,8 +16,9 @@ export default function VlogCard({
 	date: string;
 }) {
 	const navigate = useNavigate();
+	const urlFriendlyName = encodeURIComponent(title);
 	return (
-		<div className="vlog-card" onClick={() => navigate(`/vlog/${id}`)}>
+		<div className="vlog-card" onClick={() => navigate(`/vlog/${urlFriendlyName}`)}>
 			<img
 				src={"https://83.151.132.141" + thumbnail}
 				width={300}

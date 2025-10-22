@@ -14,7 +14,7 @@ function App() {
 				path="/"
 				element={<MainPage vlogs={vlogs} setVlogs={setVlogs} />}
 			/>
-			<Route path="/vlog/:id" element={<VlogPage vlogs={vlogs} />} />
+			<Route path="/vlog/:blogName" element={<VlogPage vlogs={vlogs} />} />
 			<Route path="*" element={<NotFoundPage />} />
 		</Routes>
 	);
