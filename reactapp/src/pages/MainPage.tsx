@@ -39,7 +39,6 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 			const data = await fetchVlogs();
 			console.log("Fetched vlogs:", data);
 			setVlogs(data);
-			setFilteredVlogs(data); // så du har noget at vise fra start
 			setLoading(false);
 		};
 		fetchData();

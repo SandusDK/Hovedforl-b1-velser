@@ -20,6 +20,8 @@ export default function VlogCard({
 		<div className="vlog-card" onClick={() => navigate(`/vlog/${id}`)}>
 			<img
 				src={"https://83.151.132.141" + thumbnail}
+				width={300}
+				height={200}
 				alt={title}
 				className="vlog-thumbnail"
 			/>
