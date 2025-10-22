@@ -11,17 +11,17 @@ interface MainPageProps {
 
 export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 	const [searchTerm, setSearchTerm] = useState("");
-	const [filteredVlogs, setFilteredVlogs] = useState<VlogPageData[]>([]);
+	const [displayedVlogs, setDisplayedVlogs] = useState<VlogPageData[]>([]);
 	const [loading, setLoading] = useState(false);
 
-	const fetchVlogs = async () => {
+	const fetchVlogs = async (keyword: string = "page") => {
 		try {
 			console.log(
 				"Henter vlogs fra API fra:",
-				`${config.API_URL}/BlogSearch/search?q=page`
+				`${config.API_URL}/BlogSearch/search?q=${keyword}`
 			);
 			const response = await fetch(
-				`${config.API_URL}/BlogSearch/search?q=page`
+				`${config.API_URL}/BlogSearch/search?q=${keyword}`
 			);
 
 			if (!response.ok) throw new Error(`HTTP-fejl: ${response.status}`);
@@ -39,27 +39,35 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 			const data = await fetchVlogs();
 			console.log("Fetched vlogs:", data);
 			setVlogs(data);
+			setDisplayedVlogs(data);
 			setLoading(false);
 		};
 		fetchData();
 	}, [setVlogs]);
 
-	const handleSearch = () => {
-		if (!searchTerm) {
-			setFilteredVlogs(vlogs);
+	const handleSearch = async () => {
+		if (!searchTerm.trim()) {
+			// If search is empty, fetch default results
+			setLoading(true);
+			const data = await fetchVlogs();
+			setDisplayedVlogs(data);
+			setLoading(false);
 			return;
 		}
 
-		const filtered = vlogs.filter((vlog) => {
-			const firstPost = vlog.posts[0];
-			return (
-				vlog.blogName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				firstPost?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				firstPost?.content.toLowerCase().includes(searchTerm.toLowerCase())
-			);
-		});
+		// Call API with search term
+		setLoading(true);
+		const data = await fetchVlogs(searchTerm);
+		setDisplayedVlogs(data);
+		setLoading(false);
+	};
 
-		setFilteredVlogs(filtered);
+	const handleClear = async () => {
+		setSearchTerm("");
+		setLoading(true);
+		const data = await fetchVlogs();
+		setDisplayedVlogs(data);
+		setLoading(false);
 	};
 
 	return (
@@ -79,21 +87,15 @@ export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 				<button className="Button" onClick={handleSearch}>
 					Søg
 				</button>
-				<button
-					className="Button"
-					onClick={() => {
-						setSearchTerm("");
-						setFilteredVlogs(vlogs);
-					}}
-				>
+				<button className="Button" onClick={handleClear}>
 					Ryd
 				</button>
 
 				<div className="VlogGrid">
 					{loading ? (
 						<p>Loading vlogs...</p>
-					) : filteredVlogs.length > 0 ? (
-						filteredVlogs.map((vlog) => {
+					) : displayedVlogs.length > 0 ? (
+						displayedVlogs.map((vlog) => {
 							const firstPost = vlog.posts[0];
 							return (
 								<VlogCard
