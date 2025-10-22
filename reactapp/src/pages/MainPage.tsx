@@ -3,25 +3,47 @@ import "../App.css";
 import config from "../config";
 import VlogCard from "../components/VlogCard";
 import { VlogPageData } from "../types/Vlog";
-import VlogSeed from "../data/VlogSeed";
 
-export default function MainPage() {
+interface MainPageProps {
+	vlogs: VlogPageData[];
+	setVlogs: React.Dispatch<React.SetStateAction<VlogPageData[]>>;
+}
+
+export default function MainPage({ vlogs, setVlogs }: MainPageProps) {
 	const [searchTerm, setSearchTerm] = useState("");
-	const [vlogs, setVlogs] = useState<VlogPageData[]>(VlogSeed);
 	const [filteredVlogs, setFilteredVlogs] = useState<VlogPageData[]>([]);
+	const [loading, setLoading] = useState(false);
 
-	const fetchData = async () => {
-		const response = await fetch(
-			"http://192.168.1.50:52488/api/BlogSearch/search?q=1"
-		);
-		const data = await response.json();
-		return data;
+	const fetchVlogs = async () => {
+		try {
+			console.log(
+				"Henter vlogs fra API fra:",
+				`${config.API_URL}/BlogSearch/search?q=1`
+			);
+			const response = await fetch(
+				`${config.API_URL}/BlogSearch/search?q=1`
+			);
+
+			if (!response.ok) throw new Error(`HTTP-fejl: ${response.status}`);
+			const data = await response.json();
+			return data.results as VlogPageData[];
+		} catch (error) {
+			console.error("Fejl ved hentning af vlogs:", error);
+			return [];
+		}
 	};
 
 	useEffect(() => {
-		console.log("API URL from config:", config.API_URL);
-		fetchData().then((data) => console.log(`data from api: ${data}`));
-	}, []);
+		const fetchData = async () => {
+			setLoading(true);
+			const data = await fetchVlogs();
+			console.log("Fetched vlogs:", data);
+			setVlogs(data);
+			setFilteredVlogs(data); // så du har noget at vise fra start
+			setLoading(false);
+		};
+		fetchData();
+	}, [setVlogs]);
 
 	const handleSearch = () => {
 		if (!searchTerm) {
@@ -34,9 +56,7 @@ export default function MainPage() {
 			return (
 				vlog.blogName.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				firstPost?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				firstPost?.description
-					.toLowerCase()
-					.includes(searchTerm.toLowerCase())
+				firstPost?.content.toLowerCase().includes(searchTerm.toLowerCase())
 			);
 		});
 
@@ -71,20 +91,19 @@ export default function MainPage() {
 				</button>
 
 				<div className="VlogGrid">
-					{filteredVlogs.length > 0 ? (
-						filteredVlogs.map((vlog, index) => {
+					{loading ? (
+						<p>Loading vlogs...</p>
+					) : filteredVlogs.length > 0 ? (
+						filteredVlogs.map((vlog) => {
 							const firstPost = vlog.posts[0];
-
 							return (
 								<VlogCard
-									key={index}
+									key={vlog.id}
 									id={vlog.id}
 									title={vlog.blogName}
-									description={
-										firstPost?.description ?? "Ingen beskrivelse"
-									}
-									thumbnail={firstPost?.image ?? ""}
-									date={firstPost?.date ?? "Ukendt dato"}
+									description={vlog.followText ?? "Ingen beskrivelse"}
+									thumbnail={firstPost?.featuredImage ?? ""}
+									date={firstPost?.publishDate ?? "Ukendt dato"}
 								/>
 							);
 						})

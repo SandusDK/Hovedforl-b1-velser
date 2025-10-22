@@ -1,12 +1,12 @@
 // types/VlogPage.ts
 
-export interface BlogPost {
-	id: number;
+export interface Post {
+	id: string;
 	title: string;
-	description: string;
-	date: string;
-	image: string;
 	content: string;
+	publishDate: string;
+	featuredImage: string;
+	tags: string[];
 }
 
 export interface AboutSection {
@@ -15,11 +15,16 @@ export interface AboutSection {
 	description: string;
 }
 
+export interface PopularPost {
+	title: string;
+	image: string;
+}
+
 export interface VlogPageData {
-	id: number;
+	id: string;
 	blogName: string;
-	posts: BlogPost[];
-	about: AboutSection;
-	popularPosts: string[]; // image URLs or descriptions
 	followText: string;
+	posts: Post[];
+	about: AboutSection;
+	popularPosts: PopularPost[];
 }
