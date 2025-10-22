@@ -8,6 +8,7 @@ interface VlogPageProps {
 
 export default function VlogPage({ vlogs }: VlogPageProps) {
 	const { id } = useParams<{ id: string }>();
+	const BASE_URL = "https://83.151.132.141";
 
 	const vlog = vlogs.find((vlog) => vlog.id === id);
 
@@ -27,12 +28,12 @@ export default function VlogPage({ vlogs }: VlogPageProps) {
 					{vlog.posts.map((post) => (
 						<div className="card" key={post.id}>
 							<h2>{post.title}</h2>
-							<h5>{post.publishDate}</h5>
+							<h5>{new Date(post.publishDate).toLocaleDateString()}</h5>
 							<div
 								className="fakeimg"
 								style={{
 									height: "200px",
-									backgroundImage: `url(${post.featuredImage})`,
+									backgroundImage: `url(${BASE_URL}${post.featuredImage})`,
 									backgroundSize: "cover",
 									backgroundPosition: "center",
 								}}
@@ -44,13 +45,14 @@ export default function VlogPage({ vlogs }: VlogPageProps) {
 
 				{/* Right column – about + popular + follow */}
 				<div className="rightcolumn">
+					{/* About section */}
 					<div className="card">
 						<h2>{vlog.about.title}</h2>
 						<div
 							className="fakeimg"
 							style={{
 								height: "100px",
-								backgroundImage: `url(${vlog.about.image})`,
+								backgroundImage: `url(${BASE_URL}${vlog.about.image})`,
 								backgroundSize: "cover",
 								backgroundPosition: "center",
 							}}
@@ -58,6 +60,7 @@ export default function VlogPage({ vlogs }: VlogPageProps) {
 						<p>{vlog.about.description}</p>
 					</div>
 
+					{/* Popular posts */}
 					<div className="card">
 						<h3>Popular Posts</h3>
 						{vlog.popularPosts.map((post, idx) => (
@@ -65,7 +68,7 @@ export default function VlogPage({ vlogs }: VlogPageProps) {
 								<div
 									className="fakeimg"
 									style={{
-										backgroundImage: `url(${post.image})`,
+										backgroundImage: `url(${BASE_URL}${post.image})`,
 										backgroundSize: "cover",
 										backgroundPosition: "center",
 										height: "100px",
@@ -76,6 +79,7 @@ export default function VlogPage({ vlogs }: VlogPageProps) {
 						))}
 					</div>
 
+					{/* Follow text */}
 					<div className="card">
 						<h3>Follow Me</h3>
 						<p>{vlog.followText}</p>
