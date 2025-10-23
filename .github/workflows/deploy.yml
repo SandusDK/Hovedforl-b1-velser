@@ -19,4 +19,5 @@ jobs:
           port: 22
           script: |
             cd /home/user/Hovedforl-b1-velser
-            bash deploy.sh
+            chmod +x deploy.sh
+            ./deploy.sh

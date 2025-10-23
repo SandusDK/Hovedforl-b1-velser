@@ -13,9 +13,11 @@ git clean -fd
 
 # Kill existing processes
 echo "Stopping existing processes..."
-pkill -f "react-scripts start" || true
-pkill -f "dotnet run" || true
-sleep 2
+pkill -f "react-scripts" || true
+pkill -f "UmbracoCMS2" || true
+pkill -f "node.*reactapp" || true
+killall -9 dotnet 2>/dev/null || true
+sleep 3
 
 # Start React frontend
 cd $PROJECT_DIR/reactapp
