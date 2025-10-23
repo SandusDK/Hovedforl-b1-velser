@@ -22,12 +22,13 @@ sleep 3
 # Start React frontend
 cd $PROJECT_DIR/reactapp
 npm install
-npm run start:prod &
+nohup npm run start:prod > /tmp/reactapp.log 2>&1 &
 
 # Deploy Umbraco CMS
 cd $PROJECT_DIR/UmbracoCMS2
 dotnet restore
 dotnet build --configuration Release
-dotnet run --configuration Release &
+nohup dotnet run --configuration Release > /tmp/umbraco.log 2>&1 &
 
+sleep 2
 echo "Deployment completed successfully"
