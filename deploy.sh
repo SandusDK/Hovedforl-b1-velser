@@ -11,6 +11,12 @@ git checkout main
 git reset --hard origin/main
 git clean -fd
 
+# Kill existing processes
+echo "Stopping existing processes..."
+pkill -f "react-scripts start" || true
+pkill -f "dotnet run" || true
+sleep 2
+
 # Start React frontend
 cd $PROJECT_DIR/reactapp
 npm install
