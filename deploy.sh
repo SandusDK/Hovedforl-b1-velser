@@ -8,18 +8,15 @@ cd $PROJECT_DIR
 
 git pull origin main
 
-# Deploy React frontend
+# Start React frontend
 cd $PROJECT_DIR/reactapp
 npm install
-npm run build
-pm2 restart hovedforløb-frontend || pm2 start npm --name "hovedforløb-frontend" -- run start:prod
+npm run start:prod &
 
 # Deploy Umbraco CMS
 cd $PROJECT_DIR/UmbracoCMS2
 dotnet restore
 dotnet build --configuration Release
-pm2 restart umbraco-cms || pm2 start --name "umbraco-cms" -- dotnet run --configuration Release
-
-pm2 save
+dotnet run --configuration Release &
 
 echo "Deployment completed successfully"
