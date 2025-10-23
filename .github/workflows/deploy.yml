@@ -18,6 +18,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/user/Hovedforl-b1-velser
-            chmod +x deploy.sh
-            ./deploy.sh
+            bash -l -c "cd /home/user/Hovedforl-b1-velser && chmod +x deploy.sh && ./deploy.sh"
