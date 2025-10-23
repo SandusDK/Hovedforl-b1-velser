@@ -6,7 +6,10 @@ PROJECT_DIR="/home/user/Hovedforl-b1-velser"
 
 cd $PROJECT_DIR
 
-git pull origin main
+git fetch origin
+git checkout main
+git reset --hard origin/main
+git clean -fd
 
 # Start React frontend
 cd $PROJECT_DIR/reactapp
