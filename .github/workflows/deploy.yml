@@ -14,9 +14,9 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 83.151.132.141
-          username: blazing
+          username: user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/blazing/Documents/Hovedforl-b1-velser
+            cd /home/user/Hovedforl-b1-velser
             bash deploy.sh
