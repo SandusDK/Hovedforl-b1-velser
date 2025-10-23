@@ -1,14 +1,11 @@
 name: Deploy to Server
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -17,5 +14,14 @@ jobs:
           username: user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
+          script_stop: true
           script: |
-            bash -l -c "cd /home/user/Hovedforl-b1-velser && chmod +x deploy.sh && ./deploy.sh"
+            set -e
+            echo "Current directory: $(pwd)"
+            echo "Changing to deployment directory..."
+            cd /home/user/Hovedforl-b1-velser
+            echo "Making deploy.sh executable..."
+            chmod +x deploy.sh
+            echo "Running deploy.sh..."
+            ./deploy.sh
+            echo "Deploy complete!"
