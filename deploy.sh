@@ -2,7 +2,7 @@
 
 set -e
 
-PROJECT_DIR="/home/blazing/Documents/Hovedforl-b1-velser"
+PROJECT_DIR="/home/user/Hovedforl-b1-velser"
 
 cd $PROJECT_DIR
 
